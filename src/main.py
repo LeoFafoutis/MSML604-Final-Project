@@ -3,7 +3,7 @@ import numpy as np
 from config import BUDGET_HOURS, MIN_ALLOCATION_HOURS, OUTPUT_DIR, ACTIVE_PARAMETER_SET
 from data_fetch import load_or_fetch_data
 from optimization import allocate_with_minimum, compare_methods, budget_sweep, utility
-from visualize import save_top_priority, save_allocation, save_method_comparison, save_budget_utility, save_lambda_vs_budget  
+from visualize import save_top_priority, save_allocation, save_method_comparison, save_budget_utility
 import pandas as pd
 
 
@@ -39,7 +39,6 @@ def main():
     save_allocation(allocation, output_dir)
     save_method_comparison(comparison, output_dir)
     save_budget_utility(sweep, output_dir)
-    save_lambda_vs_budget(sweep, output_dir)
     print("Finished.")
     print(f"Outputs written to: {output_dir.resolve()}")
     print(summary)
