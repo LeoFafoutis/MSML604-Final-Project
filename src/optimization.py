@@ -110,8 +110,21 @@ def greedy_allocation(df, budget_hours, score_column, minimum_hours=0.0):
 
 
 def equal_time_allocation(df, budget_hours, minimum_hours=0.0):
-    work = df.copy().reset_index(drop=True)
+    if minimum_hours > 0 and budget_hours < minimum_hours:
+        work = df.copy().reset_index(drop=True)
+        work["allocated_hours"] = 0.0
+        work["selected"] = False
+        work["marginal_value_at_solution"] = work["risk_weight"] * work["information_rate"]
+        return work
+
+    work = df.copy().sort_values("palermo_scale", ascending=False).reset_index(drop=True)
     n = len(work)
+
+    if minimum_hours > 0:
+        eligible_count = min(n, int(np.floor(budget_hours / minimum_hours)))
+        work = work.head(eligible_count).copy().reset_index(drop=True)
+        n = len(work)
+
     allocation = np.zeros(n)
     remaining = budget_hours
     active = np.ones(n, dtype=bool)
@@ -130,14 +143,20 @@ def equal_time_allocation(df, budget_hours, minimum_hours=0.0):
         if abs(new_remaining - remaining) < 1e-9 and not changed:
             break
         remaining = new_remaining
-    if minimum_hours > 0:
-        allocation[allocation < minimum_hours] = 0.0
 
-    work["allocated_hours"] = allocation
-    work["selected"] = work["allocated_hours"] > 1e-8
-    work["marginal_value_at_solution"] = work["risk_weight"] * work["information_rate"] / (1 + work["information_rate"] * work["allocated_hours"])
+    result = df.copy().reset_index(drop=True)
+    result["allocated_hours"] = 0.0
+    result["selected"] = False
+    result["marginal_value_at_solution"] = result["risk_weight"] * result["information_rate"]
 
-    return work
+    for index, row in work.iterrows():
+        mask = result["designation"] == row["designation"]
+        x = float(allocation[index])
+        result.loc[mask, "allocated_hours"] = x
+        result.loc[mask, "selected"] = x > 0
+        result.loc[mask, "marginal_value_at_solution"] = result.loc[mask, "risk_weight"] * result.loc[mask, "information_rate"] / (1 + result.loc[mask, "information_rate"] * x)
+
+    return result
 
 
 def compare_methods(df, budget_hours, minimum_hours):
@@ -145,8 +164,7 @@ def compare_methods(df, budget_hours, minimum_hours):
     methods = [
         ("dual_with_minimum", optimized, lam),
         ("greedy_palermo", greedy_allocation(df, budget_hours, "palermo_scale", minimum_hours), np.nan),
-        ("greedy_risk_weight", greedy_allocation(df, budget_hours, "risk_weight", minimum_hours), np.nan),
-        ("greedy_impact_probability_baseline", greedy_allocation(df, budget_hours, "impact_probability", minimum_hours), np.nan),
+        ("greedy_impact_probability", greedy_allocation(df, budget_hours, "impact_probability", minimum_hours), np.nan),
         ("equal_time", equal_time_allocation(df, budget_hours, minimum_hours), np.nan)
     ]
     rows = []
