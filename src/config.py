@@ -1,5 +1,5 @@
 BUDGET_HOURS = 20.0
-MIN_ALLOCATION_HOURS = 0.5
+MIN_ALLOCATION_HOURS = 0
 MAX_OBJECTS = 50
 OUTPUT_DIR = "outputs"
 SENTRY_URL = "https://ssd-api.jpl.nasa.gov/sentry.api"
@@ -20,6 +20,14 @@ PARAMETER_SETS = {
         "u0": 1.0,
         "beta_q": 4.0,
         "beta_r": 1.5
+    },
+    "test2": {
+        "a0": 0.75,
+        "alpha_q": 1.75,
+        "alpha_c": 0.75,
+        "u0": 1.0,
+        "beta_q": 5.0,
+        "beta_r": 2
     }
 }
-ACTIVE_PARAMETER_SET = "baseline"
+ACTIVE_PARAMETER_SET = "test2"
