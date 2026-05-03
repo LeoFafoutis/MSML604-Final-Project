@@ -5,7 +5,7 @@ OUTPUT_DIR = "outputs"
 SENTRY_URL = "https://ssd-api.jpl.nasa.gov/sentry.api"
 CAD_URL = "https://ssd-api.jpl.nasa.gov/cad.api"
 PARAMETER_SETS = {
-    "conservative": {
+    "test1": {
         "a0": 0.75,
         "alpha_q": 0.75,
         "alpha_c": 0.25,
@@ -20,14 +20,6 @@ PARAMETER_SETS = {
         "u0": 1.0,
         "beta_q": 4.0,
         "beta_r": 1.5
-    },
-    "aggressive": {
-        "a0": 0.75,
-        "alpha_q": 1.75,
-        "alpha_c": 0.75,
-        "u0": 1.0,
-        "beta_q": 5.0,
-        "beta_r": 2.0
     }
 }
 ACTIVE_PARAMETER_SET = "baseline"
