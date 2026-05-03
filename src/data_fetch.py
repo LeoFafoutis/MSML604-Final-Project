@@ -180,7 +180,7 @@ def add_priority_features(df, parameter_set=None):
     result["risk_weight"] = result["risk_score"].clip(0, 1)
     result["information_rate"] = params["a0"] + params["alpha_q"] * result["uncertainty_need"] + params["alpha_c"] * result["close_approach_score"]
     result["max_useful_hours"] = params["u0"] + params["beta_q"] * result["uncertainty_need"] + params["beta_r"] * result["risk_score"]
-    result["max_useful_hours"] = result["max_useful_hours"].clip(0.5, 8.0)
+    result["max_useful_hours"] = result["max_useful_hours"].clip(0, 8.0)
     result["parameter_set"] = parameter_set or ACTIVE_PARAMETER_SET
     return result
 
