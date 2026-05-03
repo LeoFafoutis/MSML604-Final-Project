@@ -1,4 +1,4 @@
-# Revised Near-Earth Object Observation Optimization
+# Optimizing Observation Time for Near Earth Objects
 
 This project looks at NASA/JPS's CNEOS data (near earth objects) and tries to allocate telescope time to observe these objects, constrained on budget and time.
 
