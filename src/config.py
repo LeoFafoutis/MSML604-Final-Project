@@ -24,10 +24,10 @@ PARAMETER_SETS = {
     "test2": {
         "a0": 0.75,
         "alpha_q": 1.75,
-        "alpha_c": 0.75,
+        "alpha_c": 0.25,
         "u0": 1.0,
         "beta_q": 5.0,
-        "beta_r": 2
+        "beta_r": 0.5
     }
 }
 ACTIVE_PARAMETER_SET = "test2"
